@@ -1,0 +1,96 @@
+\documentclass[journal,twoside,web]{ieeecolor}
+\usepackage{tmi}
+\usepackage{cite}
+\usepackage{amsmath,amssymb,amsfonts}
+\usepackage{algorithmic}
+\usepackage{graphicx}
+\usepackage{textcomp}
+\usepackage{multirow}
+\usepackage{float}
+\usepackage{color}
+\usepackage{array}
+\usepackage{diagbox}
+\usepackage{pifont}
+\usepackage{hyperref}
+\hypersetup{
+    hypertex=true,
+    colorlinks=true,
+    linkcolor=blue,
+    filecolor=blue,      
+    urlcolor=blue,
+    citecolor=cyan,
+}
+\usepackage{todonotes}
+% \usepackage{hyperref}
+\usepackage{bibentry}
+\usepackage{bbding}
+\newcommand{\PreserveBackslash}[1]{\let\temp=\\#1\let\\=\temp}
+\newcolumntype{C}[1]{>{\PreserveBackslash\centering}p{#1}}
+\newcolumntype{R}[1]{>{\PreserveBackslash\raggedleft}p{#1}}
+\newcolumntype{L}[1]{>{\PreserveBackslash\raggedright}p{#1}}
+
+\newcommand*{\rom}[1]{\expandafter\@slowromancap\romannumeral #1@}
+\newcommand{\xnote}[1]{\textcolor{red}{\textbf{XO: #1}}}
+\newcommand{\rv}[1]{\textcolor{black}{#1}}
+% \newcommand{\rv}[1]{\textcolor{blue}{#1}}
+\def\etal{\emph{et al.}}
+\def\ie{\emph{i.e.}}
+\def\eg{\emph{e.g.}}
+\def\etc{\emph{etc}}
+\def\vs{\emph{vs.}}
+
+
+\def\BibTeX{{\rm B\kern-.05em{\sc i\kern-.025em b}\kern-.08em
+    T\kern-.1667em\lower.7ex\hbox{E}\kern-.125emX}}
+\markboth{\journalname, VOL. XX, NO. XX, XXXX 2021}
+{Author \MakeLowercase{\textit{et al.}}: Preparation of Papers for IEEE TRANSACTIONS and JOURNALS (Nov 2021)}
+
+\makeatletter
+\def\fnum@figure{\textcolor{subsectioncolor}{\sf Fig.~\thefigure}}
+\def\fnum@table{\textcolor{subsectioncolor}{\sf TABLE~\thetable}}
+\makeatother
+
+
+
+
+
+\begin{document}
+\title{Cascaded Patch-Sample Classification for Cervical Cancer Screening Based on Whole Slide Imaging}
+\author{Maosong Cao et. al.
+% \thanks{Sheng Wang and Xi Ouyang are with the School of Biomedical Engineering, Shanghai Jiao Tong University, Shanghai, China. (e-mail: \{wsheng, xi.ouyang\}@sjtu.edu.cn).}
+% \thanks{Tianming Liu is with the Department of Computer Science, University of Georgia, GA, USA. (e-mail: tliu@cs.uga.edu).}
+% \thanks{Dinggang Shen and Qian Wang are with the School of Biomedical Engineering, ShanghaiTech University, Shanghai, China. (e-mail:\{dgshen, wangqian2\}@shanghaitech.edu.cn). Dinggang Shen is also with the Department of Research and Development, Shanghai United Imaging Intelligence Co., Ltd., Shanghai, China. }
+% \thanks{This work was supported in part by Science and Technology Commission of Shanghai Municipality (19QC1400600 and 21010502600), National Natural Science Foundation of China (62131015), and The Key R\&D Program of Guangdong Province, China (2021B0101420006).}
+}
+
+\maketitle
+
+\begin{abstract}
+    Currently, deep-learning technologies have played an essential role in the cervical cancer screening of whole-slide images (WSI). Generally, the screening pipeline is to firstly build a detection model for finding the suspicious patches, and then use a patch-level classification model for refining the extracted patches, which are further aggregated for sample-level classification. In this paper, we propose a novel pipeline that combines CNN and transformer to improve the model performance for sample-level cervical cancer case classification through the powerful local feature extraction capability of CNN and the global feature fusion capability of the transformer structure. Meanwhile, the well-designed feature space representation and feature space location information embedding can further enhance the representation ability of our model, with the hierarchical token aggregation method, our transformer structure can finally find out precise results. our Results show that our pipeline can effectively improve the ability to classify at the sample level. 
+\end{abstract}
+
+\todo{Significance not mentioned. I don't think it's a key point for this paper to just combine CNN or transformer. It's not a valuable idea. See title of this paper.}
+\begin{IEEEkeywords}
+Computer\rv{-}Aided Diagnosis, CNN\rv{-}Transformer Combined Model, Hard Patch Mining, Score Embedding, Token Pooling
+\end{IEEEkeywords}
+
+\input{sections/introduction}
+
+\input{sections/background}
+
+\input{sections/method}
+
+\input{sections/experiment}
+
+\section{Discussion}\label{sec:discussion}
+In this paper, we propose three approaches that can help improve cervical cancer screening in CAD, and we can do some extended thinking about these approaches. First of all, for the patch-level classification model, we adopt selective clustering to enhance the feature expression ability of the model. In recent years, with the development of contrastive learning, some unsupervised algorithms may have stronger feature expression ability, such as Ye et al\cite{ye2019unsupervised} proposed an unsupervised learning method that can treat all images in a batch except the current image as sub-samples to distinguish feature vectors between different images, thereby significantly improving the expressive ability of the model. However, this method is limited by the size of the batch, and Wu et al\cite{wu2018unsupervised} proposed that a storage structure called a memory bank can be used to store all the features of the pictures, thereby greatly improving the computing capacity. However, this method also has a drawback, that is, the features in the memory bank often do not come from the encoder at the same moment. He et al.\cite{he2020momentum} proposed a method that can dynamically update the encoder, thus solving the above problem. The above methods all show the great potential of unsupervised learning in feature encoding. Besides, there are often a large number of unsupervised pictures in pathological images, so we can also develop a model with stronger feature expression ability in our later work. Second, when position embedding cannot be used, we can transform 
+
+The idea is to use other information with characteristic identifiers to embed the patch. Third, our token pooling method still has room for improvement. For example, it can further constrain related tokens on the basis of clustering to achieve a more streamlined purpose. Finally, our method can be applied not only to CAD cervical cancer screening, but also to all pathological image fields.
+
+\section{Conclusion}\label{sec:conclusion}
+We proposed a new framework for sample-level AI-assisted cervical cancer screening, which can have a better feature representation and get a significant improvement on sample-level classification. Our method has great potential, benefiting from it is a holistic classification method, so it does not require additional fine annotation by pathologists, so as the number of data increases, our method will have better performance.
+
+There are also some shortages for our method, such as we can design a better feature cluster method for patch-level classification as said in the conclusion section to improve the feature representation of our models, we can also make some improvements on the detection part to have a better fitness for detection model and classification model, all of which will be our future work.
+\bibliography{ref.bib}
+\bibliographystyle{IEEEtran}
+\end{document}

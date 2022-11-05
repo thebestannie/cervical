@@ -1,0 +1,186 @@
+
+\begin{table*}[ht]
+    \setlength\tabcolsep{5pt}
+    \centering
+    \caption{Results on patch-level classification of different methods. }
+    
+        \begin{tabular}{|c|c|c|c|c|c|c|c|c|c|c|c|c|c|c|c|}
+        \hline
+        
+        Backbone& \multicolumn{5}{|c|}{ResNet50} & \multicolumn{5}{|c|}{ResNext50}& \multicolumn{5}{|c|}{SEResNext50}\\
+        \hline
+        % \diagbox{Backbone}{Metric} %添加斜线表头
+            Metric ($\%$)    & ACC&AUC &Precision&Recall&F1 Score&  ACC&AUC &Precision&Recall&F1 Score& ACC&AUC &Precision&Recall&F1 Score\\
+        \hline
+        $L_{ce}$       & 77.76 & 79.66&  73.12&77.94  &75.45&78.94 &80.16& 76.15&73.26 &74.68 & 79.33&81.45&74.44&78.57&76.45\\
+        \hline
+        Ours (p=0.3)       & 78.59  & 81.77 & 73.08&79.67 &76.23  &79.31& 82.03 &74.82&77.93 &76.34 &80.55 &83.34 &75.77 &84.87  &80.06\\
+        \hline
+        Ours (p=0.4)     & 80.63& 82.57  &75.34&81.76 & 78.42&80.32  &82.77  &75.58&78.83 & 77.17&81.44 &83.96 &77.87 &82.85  &80.25\\
+        \hline
+        Ours (p=0.5)     &82.28 & 84.43  &78.12&83.33 &80.64& 82.87 & 84.32  &79.12&81.07 & 80.08&83.56 &85.39 & 79.04&83.73  &81.32\\
+        \hline
+        Ours (p=0.6)    & 81.64& 83.54  &77.37&79.54 &78.44&82.33  &83.85  &78.80&80.13 & 79.46&82.53 &84.46 &76.35 &82.41  &79.26\\
+        \hline
+        Ours (p=0.7)   &79.59 & 81.97  &76.55& 78.46&77.49&80.17  &82.18  &75.78&78.33 & 77.03&81.13 &82.83 &76.74 &81.93  &79.25\\
+        \hline
+        
+        \end{tabular}
+        
+        \label{tab:patch-results}
+    \end{table*}
+\begin{table*}[ht]
+    \setlength\tabcolsep{5pt}
+    \centering
+    \caption{Results on sample-level classification of different methods.}
+        \begin{tabular}{|c|c|c|c|c|c|c|}
+        \hline
+        \diagbox{Method}{Metric ($\%$)}& ACC &  AUC&Recall&Precision&F1 Score\\
+        \hline
+        Average Pooling (AVG) \cite{cao2021novel}       & $76.82\pm0.75$ & $84.32\pm1.07$& $73.49\pm0.99$& $78.62\pm1.20$& $75.96\pm0.84$\\
+        \hline
+        Support Vector Machine (SVM) \cite{zhou2021hierarchical}       & $76.82\pm0.75$ & $84.32\pm1.07$& $73.49\pm0.99$& $78.62\pm1.20$& $75.96\pm0.84$\\
+        \hline
+        Multilayer Perceptron (MLP) \cite{zhou2021hierarchical}       & $78.70\pm1.94$ & $85.60\pm0.63$& $60.78\pm4.11$& $84.52\pm1.08$& $73.90\pm3.11$\\
+        \hline
+        Recurrent Neural Network (RNN) \cite{cheng2021robust}       & $80.89\pm1.29$ & $87.17\pm1.42$& $73.71\pm2.52$& $84.08\pm2.77$& $79.82\pm0.96$\\
+        \hline
+        Graph Attention Network (GAT) \cite{zhang2022whole}       & $85.79\pm1.21$ & $92.52\pm0.91$& $82.63\pm2.04$& $88.15\pm1.39$& $85.28\pm1.27$\\
+        \hline
+        Ours       & $89.51\pm1.57$ & $93.79\pm0.95$& $88.65\pm1.72$& $91.13\pm1.41$& $89.87\pm1.19$\\
+        \hline
+        
+        \end{tabular}
+        
+        \label{tab:sample-results}
+    \end{table*}
+
+\section{Experimental Result}\label{sec:experiments}
+Our experiments are four-fold. First, we conduct experiments on different network backbones to compare the original patch-level classification method and our proposed classification method with clustering constraints to prove its effectiveness. Second, we compare our sample-level classification method with state-of-the-art methods (such as Graph Attention Network) to verify the effectiveness of the transformer structure combined with CNN. Third, we conduct ablation study on each component of the proposed method to independently verify the effectiveness of each component. Finally, we combine different detection network modules to verify the universality of our method.\par
+In Section \ref{section-4-1}, We first introduced the data set we used and the relevant experimental settings, in Section\ref{section-4-2}, We introduced the results of the patch-level classification experiment, and in Section\ref{section-4-3}, We introduced the results of sample-level classification experiment, which includes three parts: comparison with SOTA results, ablation experiment and universality experiment related to detection model.
+
+
+\subsection{Datasets and Experimental Setting}\label{section-4-1}
+We have considered two tasks of patch-level and sample-level classification in this work. 
+Therefore, there are two datasets to validate our method. 
+\begin{itemize}
+    \item 
+    The first patch-level dataset consists of 25,143 patches (negative: 13,264; positive: 11,879), each of which is cropped to the size of 224$\times$224. 
+    Given this dataset, we divide the training and test ratio as 4:1, and aim to verify the performance of the proposed patch-level classification.
+    \item 
+    The second sample-level dataset consists of 6,947 samples (negative: 3,485; positive: 3,462). 
+    For each WSI contributed from a certain sample, we apply an in-house detection tool to pick up 20 patches that are most likely to be positive~\cite{zhou2021hierarchical}. 
+    We aim to combine the proposed patch-level and sample-level classification to complete the screening based on the detected patches of the samples. 
+    Similarly, we also divide the training set and test set according to the ratio of 4:1.
+\end{itemize}   
+  
+Note that the samples contributing to the second dataset are not involved in the first dataset; thus the two datasets are fully independent. 
+A professional pathologist with 13 years of experience has conducted the patch-level and the sample-level diagnoses, providing us the ground-truth labels according to the TBS guideline. 
+
+For patch-level classification, we examine the performance of our method with three different backbones including ResNet50, ResNext50 and SEResNext50, which are all common choices for classifying histopathology images. We have trained our networks by using data augmentation on color with the Adam optimizer. The initial learning rate is 1e-3, the learning rate decay factor is 0.95, and the batch size is 64.
+For subsequent sample-level classification, we adopt two transformer layers with depths equal to 8 and 4, score embedding block, normalization layers and a MLP to construct the model, the initial learning rate is 1e-4, batch size is 8, and we use cosine annealing schedule to adjust the learning rate.
+For all classification experiments, we use ACC, AUC, precision, recall and F1 score as the metrics, and our networks are all pre-trained on ImageNet. 
+
+
+
+
+\subsection{Patch-Level Classification}\label{section-4-2}
+
+For patch-level classification, we set different p values (0.3, 0.4, 0.5, 0.6, 0.7) as the thershold between easy patches and hard patches to compare with the case which is only constraint by cross entropy loss. And for comprehensive comparisons, we adopt three different classification backbones, each of which is widely applied in pathology images. The comparison is shown in Table \ref{tab:patch-results}.
+
+
+
+We evaluate our method with different backbones and with different loss combinations. 
+The classification performance of AUC, precision, recall, and F1 score is reported Table \ref{tab:patch-results}.
+
+
+One can observe from the table that, our patch-level baseline, which is trained with vanilla cross-entropy loss function, got 79.66\% AUC on ResNet50 model, 81.77\% AUC on ResNext50 model, 84.57\% AUC on SEResNext50 model, to contrast, the model trained with both cross-entropy loss and hard patch mining loss got higher AUC scores than the baseline with all settled p values. Particularly, when we compare with different p values among our hard patch mining strategy, we can find that the results of p values settled to 0.5 are the best results, which shows the importance of threshold to distinguish between easy patches and hard patches. Too large or too small threshold can not accurately reflect the distribution of hard and easy patches in the dataset. A good threshold can make the model adapt to the accurate distribution of the dataset more quickly, thus improving the characteristic coding ability of hard patches. 
+\par
+
+
+
+
+
+\subsection{Sample-Level Classification}\label{section-4-3}
+\subsubsection{Comparisons to State-of-the-Art}
+
+We compare with the related works of deep learning based cervical cancer screening methods, the results on the sample-level is shown in Table \ref{tab:sample-results}. We can observe that the methods of connecting patches among samples (such as RNN and GAT) can have a better performance than those methods that simply process each patch to get the final classification results (such as SVM and MLP), which once again illustrates the importance of linking patches together. However, our transformer based method has achieved the best results. On the one hand, it has stronger global connectivity and integrates all patch information. On the other hand, the token pooling operation in our method has further obtained more concise but effective information, which will also be proved in the following ablation experiments.
+In general, the above results proves that the combination of transformer structure and CNN structure is effective in sample level classification, and have a significant improvement compared with other methods.
+
+\begin{table*}[ht]
+\centering
+\caption{Ablation study.}
+{
+\begin{tabular}{|c|c|c|c|c|c|c|c|c|}
+\hline
+\multicolumn{4}{|c|}{Method} & \multicolumn{5}{|c|}{Metric ($\%$)}\\
+    \hline
+Hard Patch Mining&\multicolumn{2}{|c|}{Token Pooling}&Score Embedding&ACC&AUC&Recall&Precision&F1 Score\\
+\hline
+ &\multicolumn{2}{|c|}{\XSolidBrush}&& $83.37\pm1.01$ & $87.97\pm0.69$& $78.83\pm1.09$& $86.13\pm1.22$& $82.36\pm0.88$\\
+ \hline
+ & \multicolumn{2}{|c|}{K-means}&&         $85.74\pm1.17$ & $91.97\pm0.75$& $83.99\pm0.96$& $87.87\pm1.31$& $85.89\pm1.07$\\
+ \hline
+ &\multicolumn{2}{|c|}{AP}&&     $86.32\pm1.38$ & $92.24\pm1.23$& $84.55\pm1.37$& $86.67\pm1.28$& $85.60\pm1.11$\\
+ \hline
+ \ding{52} &\multicolumn{2}{|c|}{\XSolidBrush}&&     $84.59\pm1.32$ & $89.53\pm1.14$& $81.11\pm1.53$& $86.07\pm1.36$& $83.52\pm1.09$\\
+ \hline
+  \ding{52}& \multicolumn{2}{|c|}{K-means}&&       $88.77\pm0.99$ & $93.33\pm1.15$& $85.57\pm1.32$& $92.44\pm1.03$& $88.87\pm0.75$\\
+ \hline
+  \ding{52}&\multicolumn{2}{|c|}{AP} &&      $88.19\pm1.35$ & $92.88\pm1.25$& $85.31\pm1.54$& $90.97\pm1.33$& $88.05\pm1.14$\\
+\hline
+
+ &\multicolumn{2}{|c|}{\XSolidBrush}&\ding{52}&  $83.37\pm1.01$ & $87.97\pm0.69$& $78.83\pm1.09$& $86.13\pm1.22$& $82.36\pm0.88$\\
+ \hline
+ &\multicolumn{2}{|c|}{K-means}&\ding{52}&          $85.74\pm1.17$ & $91.97\pm0.75$& $83.99\pm0.96$& $87.87\pm1.31$& $85.89\pm1.07$\\
+ \hline
+ &\multicolumn{2}{|c|}{AP}&\ding{52}&     $86.32\pm1.38$ & $92.24\pm1.23$& $84.55\pm1.37$& $86.67\pm1.28$& $85.60\pm1.11$\\
+ \hline
+ \ding{52}  &\multicolumn{2}{|c|}{\XSolidBrush}&\ding{52}&    $84.59\pm1.32$ & $89.53\pm1.14$& $81.11\pm1.53$& $86.07\pm1.36$& $83.52\pm1.09$\\
+ \hline
+  \ding{52} &\multicolumn{2}{|c|}{K-means}&\ding{52}&       $88.77\pm0.99$ & $93.33\pm1.15$& $85.57\pm1.32$& $92.44\pm1.03$& $88.87\pm0.75$\\
+ \hline
+  \ding{52} &\multicolumn{2}{|c|}{AP}&\ding{52}&    $89.51\pm1.57$ & $93.79\pm0.95$& $88.65\pm1.72$& $91.13\pm1.41$& $89.87\pm1.19$\\
+\hline
+\end{tabular}}
+    \label{tab:ablation}
+\end{table*}
+
+\begin{table*}[ht]
+    \setlength\tabcolsep{5pt}
+    \centering
+    \caption{Sample-level classification results with different detection models.}
+        \begin{tabular}{|c|c|c|c|c|c|c|}
+        \hline
+        \diagbox{Method}{Metric ($\%$)}& ACC &  AUC&Recall&Precision&F1 Score\\
+        \hline
+        FasterRCNN\cite{cao2021novel} + HPM + Token Pooling + Score Embedding       & $76.82\pm0.75$ & $84.32\pm1.07$& $73.49\pm0.99$& $78.62\pm1.20$& $75.96\pm0.84$\\
+         \hline
+        Yolov3\cite{zhou2021hierarchical}  + HPM + Token Pooling + Score Embedding         & $76.82\pm0.75$ & $84.32\pm1.07$& $73.49\pm0.99$& $78.62\pm1.20$& $75.96\pm0.84$\\
+         \hline
+        RetinaNet   + HPM + Token Pooling + Score Embedding       & $89.51\pm1.57$ & $93.79\pm0.95$& $88.65\pm1.72$& $91.13\pm1.41$& $89.87\pm1.19$\\
+        \hline
+        
+        \end{tabular}
+        
+        \label{tab:detection}
+    \end{table*}
+\begin{figure*}[ht]
+    \centering
+    \includegraphics[scale=0.18]{figures/vis.png}
+    \caption{The score and token importance visualization of two different samples, a) is a NILM sample, the score visualization is on the top right, and token importance visualization is on the bottom right, same as the b), High-level sample.}
+    \label{fig:vis}
+\end{figure*}
+\subsubsection{Ablation study}
+
+In order to verify the effectiveness of each component of our proposed method, we conducted ablation study on our sample-level dataset. As SEResNext50 gets the best result among the patch-level classification backbone, we take it as our feature encoder of the sample-level classification model. For experimental setting, we tried SEResNext50 (our feature encoder) with hard patch mining and original cross-entropy to further verify its effectiveness on the subsequent sample level classification, for score embedding, we set two options of yes or not, for token pooling strategy, we compare with no token pooling with K-means and affinity propagation, all the results are shown in Table \ref{tab:ablation}.
+\par
+The comparison between lines 1-3 and 4-6 reflects the impact of HPM (Hard Patch Mining) and no HPM on the performance of subsequent sample level classification, it can be observed that the final classification score of feature encoder after passing through the HPM model is higher than that of the ordinary feature encoder model, which is also consistent with our expectations. A patch level classification model with good feature coding ability not only has better performance in the classification of patch level, but also the feature provided by it will improve the classification of the final sample level. 
+The comparison between lines 1-6 and lines 7-12 reflects that there is score embedding and no impact on model performance.
+And every three lines reflect the impact of different token pooling strategies on classification performance. It can be observed that after the token pooling policy is adopted, no matter which policy is used, the classification performance will be significantly improved. The use of an unfixed AP clustering strategy can have a wider adaptability and robustness to different samples, and its final classification performance is also higher than k-means.
+\subsubsection{Adaptability to different detection models}
+To test the adaptability of our methods on different detection models, we change our detection models to do the same experiments, we choose Retinanet, FasterRCNN and Yolov3 to do the experiments, the results are shown in Table\ref{tab:detection}
+
+
+\subsubsection{Visualization of token importance}
+In order to intuitively show which tokens play a decisive role in the final classification, we have visualized the importance of the transformer model's tokens by referring to the method in \cite{abnar2020quantifying}, it uses the gradient of each token vector in the back propagation to express their importance, and the results are shown in the figure\ref{fig:vis}. It can be observed that the scores of most negative samples are relatively low, and the corresponding token importance map can also be found that those with low scores play a greater role in the final classification, which is consistent with the distribution of patch scores and our score embedding strategy. Positive samples are on the contrary to negative samples. Tokens with higher scores play a greater role in classification. In addition, the token importance map also shows a clustering feature, which is consistent with our token pooling strategy.

@@ -1,0 +1,15 @@
+\begin{table*}[h!]
+\caption{Performance comparison of using bounding box attention and gaze attention.}
+\label{bbox_table}
+\centering
+\begin{tabular}{ccccccccc}
+\hline
+\multirow{2}{*}{} & \multicolumn{2}{c}{400 Training Images}  & \multicolumn{2}{c}{600 Training Images} & \multicolumn{2}{c}{800 Training Images}  & \multicolumn{2}{c}{1000 Training Images} \\ \cline{2-9} 
+                        & ACC       & MAE            & ACC       & MAE           & ACC       & MAE            & ACC       & MAE            \\ \hline
+ResNet-50               & 0.493          & 0.752          & 0.550          & 0.669         & 0.591          & 0.593          & 0.616          & 0.515          \\ \hline
++100 BBox                & \textbf{0.544} & 0.666          & 0.588          & 0.577         & 0.603          & 0.555          & 0.610           & 0.553          \\ \hline
++200 BBox                & 0.498          & 0.749          & \textbf{0.603} & \textbf{0.550} & \textbf{0.615} & 0.522 & 0.638          & 0.496          \\ \hline
++100 Gaze                  & 0.542          & \textbf{0.665} & 0.567          & \textbf{0.550}         & 0.595          & \textbf{0.515}          & \textbf{0.649}          & \textbf{0.459}         \\ \hline
++200 Gaze                  & 0.528          & 0.716          & 0.586          & 0.578         & 0.600          & 0.554          & 0.617 & 0.487 \\ \hline
+\end{tabular}
+\end{table*}
